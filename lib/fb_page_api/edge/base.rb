@@ -22,16 +22,16 @@ module FbPageApi
       end
 
       def get(object_id)
-        http_request(:get, object_api_endpoint(object_id), query: body_params(options))
+        http_request(:get, object_api_endpoint(object_id), query: body_params).parsed_response
       end
 
       def delete(object_id)
-        http_request(:delete, object_api_endpoint(object_id), query: body_params(options))
+        http_request(:delete, object_api_endpoint(object_id), query: body_params).parsed_response
       end
 
       def create(*args)
         options = args.extract_options!
-        http_request(:post, api_endpoint, query: body_params(options))
+        http_request(:post, api_endpoint, query: body_params(options)).parsed_response
       end
 
       private
