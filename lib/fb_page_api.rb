@@ -1,5 +1,21 @@
+require "active_support/all"
 require "fb_page_api/version"
+require "fb_page_api/config"
+require "fb_page_api/edge/all"
 
 module FbPageApi
-  # Your code goes here...
+  extend self
+
+  def configure
+    yield(FbPageApi::Config) if block_given?
+    FbPageApi::Config
+  end
+
+  def labels
+    FbPageApi::Edge::AdminLabel.new
+  end
+
+  def admin_notes
+    FbPageApi::Edge::AdminNote.new
+  end
 end
