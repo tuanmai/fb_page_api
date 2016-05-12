@@ -11,7 +11,7 @@ module FbPageApi
         options = args.extract_options!
         @collection = []
         begin
-          rs = HTTParty.get(api_endpoint, query: body_params(options))
+          rs = http_request(:get, api_endpoint, query: body_params(options))
           data = rs.parsed_response['data']
           if data.present?
             @collection = @collection | data
@@ -22,21 +22,29 @@ module FbPageApi
       end
 
       def get(object_id)
-        HTTParty.get(object_api_endpoint(object_id), query: body_params)
+        http_request(:get, object_api_endpoint(object_id), query: body_params(options))
       end
 
       def delete(object_id)
-        HTTParty.delete(object_api_endpoint(object_id), query: body_params)
+        http_request(:delete, object_api_endpoint(object_id), query: body_params(options))
       end
 
       def create(*args)
         options = args.extract_options!
-        HTTParty.post(api_endpoint, query: body_params(options))
+        http_request(:post, api_endpoint, query: body_params(options))
       end
 
       private
       def edge_name
         raise 'Please override this method in inherit class'
+      end
+
+      def http_request(method, *args)
+        rs = HTTParty.send(method, *args)
+        if rs.code != 200
+          raise rs.parsed_response['error']['message']
+        end
+        rs
       end
 
       def api_endpoint
