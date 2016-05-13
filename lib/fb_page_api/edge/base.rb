@@ -1,7 +1,7 @@
 module FbPageApi
   module Edge
     class Base
-      attr_accessor :parent_id, :page_after, :page_before
+      attr_accessor :parent_id, :page_after, :page_before, :next_url
 
       def initialize(parent_id = Config.page_id)
         self.parent_id = parent_id
@@ -11,11 +11,19 @@ module FbPageApi
         options = args.extract_options!
         @collection = []
         begin
-          rs = http_request(:get, api_endpoint, query: body_params(options))
+          rs = http_request(:get, self.next_url || api_endpoint, query: body_params(options))
           data = rs.parsed_response['data']
           if data.present?
             @collection = @collection | data
-            self.page_after = rs.parsed_response['paging']['cursors']['after']
+            if rs.parsed_response['paging']['cursors'].present?
+              self.page_after = rs.parsed_response['paging']['cursors']['after']
+              self.next_url = nil
+            elsif rs.parsed_response['paging']['next'].present?
+              self.next_url = rs.parsed_response['paging']['next']
+              self.page_after = nil
+            else
+              data = []
+            end
           end
         end while data.present?
         @collection

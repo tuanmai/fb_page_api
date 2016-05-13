@@ -18,4 +18,12 @@ module FbPageApi
   def admin_notes
     FbPageApi::Edge::AdminNote.new
   end
+
+  def conversations
+    FbPageApi::Edge::Conversation.new
+  end
+
+  def users
+    FbPageApi::Edge::User.new
+  end
 end
