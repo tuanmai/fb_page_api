@@ -26,4 +26,8 @@ module FbPageApi
   def users
     FbPageApi::Edge::User.new
   end
+
+  def messages(conversation_id)
+    FbPageApi::Edge::Message.new(conversation_id)
+  end
 end
