@@ -15,12 +15,16 @@ module FbPageApi
           data = rs.parsed_response['data']
           if data.present?
             @collection = @collection | data
-            if rs.parsed_response['paging']['cursors'].present?
-              self.page_after = rs.parsed_response['paging']['cursors']['after']
-              self.next_url = nil
-            elsif rs.parsed_response['paging']['next'].present?
-              self.next_url = rs.parsed_response['paging']['next']
-              self.page_after = nil
+            if rs.parsed_response['paging'].present?
+              if rs.parsed_response['paging']['cursors'].present?
+                self.page_after = rs.parsed_response['paging']['cursors']['after']
+                self.next_url = nil
+              elsif rs.parsed_response['paging']['next'].present?
+                self.next_url = rs.parsed_response['paging']['next']
+                self.page_after = nil
+              else
+                data = []
+              end
             else
               data = []
             end

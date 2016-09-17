@@ -1,12 +1,12 @@
 module FbPageApi
   module Edge
-    class AdminLabel < Base
+    class LabelUser < Base
       def edge_name
-        'labels'
+        'users'
       end
 
       def request_fields
-        ['name']
+        ['id', 'name']
       end
     end
   end
