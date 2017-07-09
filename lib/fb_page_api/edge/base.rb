@@ -1,10 +1,11 @@
 module FbPageApi
   module Edge
     class Base
-      attr_accessor :parent_id, :page_after, :page_before, :next_url
+      attr_accessor :parent_id, :page_after, :page_before, :next_url, :page_id, :page_access_token
 
-      def initialize(parent_id = Config.page_id)
-        self.parent_id = parent_id
+      def initialize(options = { parent_id: Config.page_id, page_access_token: Config.page_access_token })
+        self.page_access_token = options[:page_access_token]
+        self.parent_id = options[:parent_id]
       end
 
       def collection(*args)
@@ -76,7 +77,7 @@ module FbPageApi
 
       def auth_params
         {
-          access_token: Config.page_access_token
+          access_token: self.page_access_token
         }
       end
 

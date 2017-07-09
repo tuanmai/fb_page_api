@@ -11,27 +11,27 @@ module FbPageApi
     FbPageApi::Config
   end
 
-  def labels
-    FbPageApi::Edge::AdminLabel.new
+  def labels(options = {})
+    FbPageApi::Edge::AdminLabel.new(options)
   end
 
-  def admin_notes
-    FbPageApi::Edge::AdminNote.new
+  def admin_notes(options = {})
+    FbPageApi::Edge::AdminNote.new(options)
   end
 
-  def conversations
-    FbPageApi::Edge::Conversation.new
+  def conversations(options = {})
+    FbPageApi::Edge::Conversation.new(options)
   end
 
-  def users
-    FbPageApi::Edge::User.new
+  def users(options = {})
+    FbPageApi::Edge::User.new(options)
   end
 
-  def messages(conversation_id)
-    FbPageApi::Edge::Message.new(conversation_id)
+  def messages(conversation_id, options = {})
+    FbPageApi::Edge::Message.new(options.merge({ parent_id: conversation_id }))
   end
 
-  def label_users(label_id)
-    FbPageApi::Edge::LabelUser.new(label_id)
+  def label_users(label_id, options = {})
+    FbPageApi::Edge::LabelUser.new(options.merge({ parent_id: label_id })) 
   end
 end
