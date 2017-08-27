@@ -1,11 +1,12 @@
 module FbPageApi
   module Edge
     class Base
-      attr_accessor :parent_id, :page_after, :page_before, :next_url, :page_id, :page_access_token
+      attr_accessor :parent_id, :page_after, :page_before, :next_url, :page_id, :page_access_token, :custom_request_fields
 
       def initialize(options = { parent_id: Config.page_id, page_access_token: Config.page_access_token })
         self.page_access_token = options[:page_access_token]
         self.parent_id = options[:parent_id]
+        self.custom_request_fields = options[:custom_request_fields] || []
       end
 
       def collection(*args)
@@ -83,7 +84,7 @@ module FbPageApi
 
       def field_params
         {
-          fields: request_fields.join(',')
+          fields: (request_fields | custom_request_fields).join(',')
         }
       end
 
