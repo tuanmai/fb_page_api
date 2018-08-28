@@ -91,12 +91,12 @@ module FbPageApi
       def paginate_params
         if self.page_after.present?
           {
-            limit: 1000,
+            limit: 10000,
             after: self.page_after
           }
         else
           {
-            limit: 1000,
+            limit: 10000,
           }
         end
       end
